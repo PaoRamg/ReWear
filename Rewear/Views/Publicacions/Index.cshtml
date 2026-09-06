@@ -1,0 +1,89 @@
+@model IEnumerable<Rewear.Models.Publicacion>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="container">
+
+    <h1>Productos</h1>
+
+    <div class="productos-layout">
+
+        <!-- FILTROS -->
+        <aside class="filtros">
+
+            <h3>Filtrar por: </h3>
+            <h3>Categorías</h3>
+
+            <label>
+                <input type="checkbox" />
+                Ropa Mujer
+            </label>
+
+            <label>
+                <input type="checkbox" />
+                Ropa Hombre
+            </label>
+
+            <label>
+                <input type="checkbox" />
+                Zapatos
+            </label>
+
+            <label>
+                <input type="checkbox" />
+                Accesorios
+            </label>
+
+        </aside>
+
+
+        <!-- PRODUCTOS -->
+        <div class="publicaciones">
+
+            @foreach (var publicacion in Model)
+            {
+                <div class="card">
+
+                    @if (!string.IsNullOrEmpty(publicacion.Imagen))
+                    {
+                        <img src="@publicacion.Imagen"
+                             alt="@publicacion.Titulo" />
+                    }
+
+                    <div class="card-body">
+
+                        <h2>@publicacion.Titulo</h2>
+
+                        <p>@publicacion.Descripcion</p>
+
+                        <p>
+                            <strong>S/ @publicacion.Precio</strong>
+                        </p>
+
+                        <p>
+                            Categoría:
+                            @publicacion.Categoria?.Nombre
+                        </p>
+
+                        <p>
+                            Estado:
+                            @publicacion.EstadoPrenda?.Nombre
+                        </p>
+
+                        <p>
+                            Vendedor:
+                            @publicacion.Vendedor
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

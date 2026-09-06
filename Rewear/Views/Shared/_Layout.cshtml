@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - ReWear</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Rewear.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+        <div class="header-container">
+
+            <!-- LOGO -->
+            <a class="logo"
+               asp-controller="Home"
+               asp-action="Index">
+
+                <img src="~/images/logo-rewear-1.png"
+                     alt="ReWear"
+                     class="logo-image" />
+
+            </a>
+
+ 
+            
+            
+            
+            
+            <!-- BUSCADOR -->
+            <div class="search-box">
+
+                <input type="text"
+                       placeholder="Busca ropa, marcas o categorías..." />
+
+                <span>⌕</span>
+
+            </div>
+
+            <!-- NAVEGACIÓN -->
+            <nav class="nav">
+
+                <a class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    Inicio
+                </a>
+
+                <a class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Publicacions" ? "active" : "")"
+                   asp-controller="Publicacions"
+                   asp-action="Index">
+                    Productos
+                </a>
+
+                <a href="#">
+                    ¿Quieres vender?
+                </a>
+
+            </nav>
+
+            <!-- ICONOS -->
+            <div class="header-icons">
+
+                <button type="button" title="Favoritos">
+                    <img src="~/images/favorito.png" alt="Favoritos" />
+                </button>
+
+                <button type="button" title="Carrito">
+                    <img src="~/images/carrito.png" alt="Carrito" />
+                </button>
+
+            </div>
+
+            <!-- AUTENTICACIÓN -->
+            <div class="auth-buttons">
+
+                <button type="button"
+                        class="btn-login">
+                    Iniciar sesión
+                </button>
+
+                <button type="button"
+                        class="btn-register">
+                    Registrarse
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- ================= CONTENIDO ================= -->
+
+    <main>
+        @RenderBody()
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+                <img src="~/images/logo-rewear-1.png"
+                     alt="ReWear"
+                     class="footer-logo" />
+
+                <p>
+                    Dale una segunda vida a tu estilo.
+                </p>
+            </div>
+
+            <div>
+
+                <h4>ReWear</h4>
+
+                <a asp-controller="Home"
+                   asp-action="Index">
+                    Inicio
+                </a>
+
+                <a asp-controller="Publicacions"
+                   asp-action="Index">
+                    Productos
+                </a>
+
+                <a href="#">
+                    ¿Quieres vender?
+                </a>
+
+            </div>
+
+            <div>
+
+                <h4>Ayuda</h4>
+
+                <a href="#">
+                    Preguntas frecuentes
+                </a>
+
+                <a href="#">
+                    Contacto
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            © 2026 ReWear. Todos los derechos reservados.
+
+        </div>
+
+    </footer>
+
+
+    <!-- SCRIPTS -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
