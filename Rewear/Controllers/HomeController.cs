@@ -17,7 +17,7 @@ namespace Rewear.Controllers
         {
             return View();
         }
-        // probando push 
+        // probando push, creo que no daaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         public IActionResult Privacy()
         {
             return View();
