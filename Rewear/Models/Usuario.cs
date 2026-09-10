@@ -1,0 +1,43 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace Rewear.Models
+{
+    // Entidad independiente: no tiene llaves foráneas hacia otras tablas.
+    public class Usuario
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(100)]
+        [Display(Name = "Nombres")]
+        public string Nombres { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [StringLength(100)]
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El correo es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo válido.")]
+        [Display(Name = "Correo electrónico")]
+        public string Correo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [StringLength(100, MinimumLength = 4)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string Contrasena { get; set; } = string.Empty;
+
+        [Phone(ErrorMessage = "Ingrese un teléfono válido.")]
+        [Display(Name = "Teléfono")]
+        public string? Telefono { get; set; }
+
+        [Display(Name = "Fecha de registro")]
+        [DataType(DataType.Date)]
+        public DateTime FechaRegistro { get; set; } = DateTime.Now;
+
+        [Display(Name = "Estado")]
+        public bool Estado { get; set; } = true;
+    }
+}
