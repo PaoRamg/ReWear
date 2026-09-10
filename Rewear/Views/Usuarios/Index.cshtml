@@ -1,0 +1,47 @@
+@model IEnumerable<Rewear.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="container">
+
+    <h1>Usuarios</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">+ Nuevo usuario</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Nombres)</th>
+                <th>@Html.DisplayNameFor(model => model.Apellidos)</th>
+                <th>@Html.DisplayNameFor(model => model.Correo)</th>
+                <th>@Html.DisplayNameFor(model => model.Telefono)</th>
+                <th>@Html.DisplayNameFor(model => model.FechaRegistro)</th>
+                <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => usuario.Nombres)</td>
+                    <td>@Html.DisplayFor(modelItem => usuario.Apellidos)</td>
+                    <td>@Html.DisplayFor(modelItem => usuario.Correo)</td>
+                    <td>@Html.DisplayFor(modelItem => usuario.Telefono)</td>
+                    <td>@usuario.FechaRegistro.ToShortDateString()</td>
+                    <td>@(usuario.Estado ? "Activo" : "Inactivo")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@usuario.Id">Ver</a> |
+                        <a asp-action="Edit" asp-route-id="@usuario.Id">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@usuario.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

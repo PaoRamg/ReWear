@@ -13,6 +13,7 @@ namespace Rewear.Data
         public DbSet<Publicacion> Publicaciones { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<EstadoPrenda> EstadosPrenda { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -141,6 +142,43 @@ namespace Rewear.Data
                     Vendedor = "Sofía",
                     Categoria_idCategoria = 4,
                     EstadoPrenda_idEstadoPrenda = 2
+                }
+            );
+
+            //Registros iniciales para la tabla Usuario (entidad independiente)
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario
+                {
+                    Id = 1,
+                    Nombres = "María",
+                    Apellidos = "López Ramírez",
+                    Correo = "maria.lopez@example.com",
+                    Contrasena = "clave1234",
+                    Telefono = "987654321",
+                    FechaRegistro = new DateTime(2026, 1, 10),
+                    Estado = true
+                },
+                new Usuario
+                {
+                    Id = 2,
+                    Nombres = "Ana",
+                    Apellidos = "Torres Vega",
+                    Correo = "ana.torres@example.com",
+                    Contrasena = "clave1234",
+                    Telefono = "987654322",
+                    FechaRegistro = new DateTime(2026, 2, 15),
+                    Estado = true
+                },
+                new Usuario
+                {
+                    Id = 3,
+                    Nombres = "Luis",
+                    Apellidos = "Fernández Ríos",
+                    Correo = "luis.fernandez@example.com",
+                    Contrasena = "clave1234",
+                    Telefono = "987654323",
+                    FechaRegistro = new DateTime(2026, 3, 5),
+                    Estado = false
                 }
             );
         }
