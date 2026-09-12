@@ -8,10 +8,13 @@
 
 <h4>Usuario</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
@@ -32,11 +35,6 @@
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Contrasena" class="control-label"></label>
-                <input asp-for="Contrasena" class="form-control" />
-                <span asp-validation-for="Contrasena" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <label asp-for="Telefono" class="control-label"></label>
@@ -44,29 +42,76 @@
                 <span asp-validation-for="Telefono" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="FechaRegistro" class="control-label"></label>
-                <input asp-for="FechaRegistro" class="form-control" />
-                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+            <!-- Foto de perfil -->
+            <div class="form-group mt-3">
+                <label class="control-label">Foto de perfil</label>
+
+                @if (!string.IsNullOrEmpty(Model.FotoPerfil))
+                {
+                    <div class="mb-2">
+                        <img src="@Model.FotoPerfil"
+                             alt="Foto de perfil de @Model.Nombres"
+                             style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #ddd;" />
+                    </div>
+                }
+                else
+                {
+                    <p>No tiene foto de perfil.</p>
+                }
+
+                <input type="file"
+                       name="fotoPerfil"
+                       class="form-control"
+                       accept=".jpg,.jpeg,.png,.webp" />
+
+                <small class="text-muted">
+                    Formatos permitidos: JPG, JPEG, PNG y WEBP. Máximo 5 MB.
+                </small>
+
+                <span asp-validation-for="FotoPerfil" class="text-danger"></span>
             </div>
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
+            <!-- Contraseña -->
+            <div class="form-group mt-3">
+                <label class="control-label">Contraseña</label>
+                <div>
+                    <a asp-action="CambiarContrasena"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-outline-secondary">
+                        Cambiar contraseña
+                    </a>
+                </div>
             </div>
 
-            <div class="form-group">
+            <!-- Fecha de registro -->
+            <div class="form-group mt-3">
+                <label class="control-label">Fecha de registro</label>
+                <input value="@Model.FechaRegistro.ToShortDateString()"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <!-- Estado -->
+            <div class="form-group mt-3">
+                <label class="control-label">Estado</label>
+                <input value="@(Model.Estado ? "Activo" : "Inactivo")"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-2">
     <a asp-action="Index">Volver a la lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

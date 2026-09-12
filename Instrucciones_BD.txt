@@ -1,0 +1,9 @@
+REWear - Instrucciones de instalación BD
+
+1. Restaurar la base de datos ReWear.bak en SQL Server.
+2. Verificar la cadena de conexión en appsettings.json.
+3. Abrir el proyecto en Visual Studio.
+4. Ejecutar el proyecto.
+
+La carpeta wwwroot/uploads/perfiles contiene las fotografías
+de perfil utilizadas por los usuarios registrados.
