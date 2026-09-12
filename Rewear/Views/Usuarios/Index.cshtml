@@ -4,44 +4,139 @@
     ViewData["Title"] = "Usuarios";
 }
 
-<div class="container">
+@section Styles {
+    <link rel="stylesheet" href="~/css/usuarios.css" />
+}
 
-    <h1>Usuarios</h1>
+<div class="usuarios-container">
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary">+ Nuevo usuario</a>
-    </p>
+    <div class="usuarios-header">
+        <h1>Usuarios</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Nombres)</th>
-                <th>@Html.DisplayNameFor(model => model.Apellidos)</th>
-                <th>@Html.DisplayNameFor(model => model.Correo)</th>
-                <th>@Html.DisplayNameFor(model => model.Telefono)</th>
-                <th>@Html.DisplayNameFor(model => model.FechaRegistro)</th>
-                <th>@Html.DisplayNameFor(model => model.Estado)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var usuario in Model)
-            {
+        <a asp-action="Create" class="btn-nuevo">
+            + Nuevo usuario
+        </a>
+    </div>
+
+    <div class="tabla-card">
+
+        <table class="tabla-usuarios">
+
+            <thead>
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => usuario.Nombres)</td>
-                    <td>@Html.DisplayFor(modelItem => usuario.Apellidos)</td>
-                    <td>@Html.DisplayFor(modelItem => usuario.Correo)</td>
-                    <td>@Html.DisplayFor(modelItem => usuario.Telefono)</td>
-                    <td>@usuario.FechaRegistro.ToShortDateString()</td>
-                    <td>@(usuario.Estado ? "Activo" : "Inactivo")</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@usuario.Id">Ver</a> |
-                        <a asp-action="Edit" asp-route-id="@usuario.Id">Editar</a> |
-                        <a asp-action="Delete" asp-route-id="@usuario.Id">Eliminar</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombres)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Apellidos)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Telefono)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaRegistro)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+
+                    <th>
+                        Acciones
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    foreach (var usuario in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Nombres)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Apellidos)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Correo)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => usuario.Telefono)
+                            </td>
+
+                            <td>
+                                @usuario.FechaRegistro.ToShortDateString()
+                            </td>
+
+                            <td>
+                                @if (usuario.Estado)
+                                {
+                                    <span class="estado estado-activo">
+                                        Activo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="estado estado-inactivo">
+                                        Inactivo
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <div class="acciones">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@usuario.Id"
+                                       class="btn-accion btn-ver">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@usuario.Id"
+                                       class="btn-accion btn-editar">
+                                        Editar
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@usuario.Id"
+                                       class="btn-accion btn-eliminar">
+                                        Eliminar
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="sin-registros">
+                            No hay usuarios registrados.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>

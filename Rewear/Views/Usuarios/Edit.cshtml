@@ -4,110 +4,153 @@
     ViewData["Title"] = "Editar usuario";
 }
 
-<h1>Editar usuario</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/usuario-form.css" />
+}
 
-<h4>Usuario</h4>
-<hr />
+<div class="usuario-form-container">
 
-<div class="row">
-    <div class="col-md-4">
+    <div class="usuario-form-header">
+        <h1>Editar usuario</h1>
+        <p>Actualiza la información del usuario</p>
+    </div>
+
+    <div class="usuario-form-card">
 
         <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
 
-            <div class="form-group">
-                <label asp-for="Nombres" class="control-label"></label>
-                <input asp-for="Nombres" class="form-control" />
-                <span asp-validation-for="Nombres" class="text-danger"></span>
+            <!-- Nombres -->
+            <div class="usuario-campo">
+                <label asp-for="Nombres"></label>
+                <input asp-for="Nombres" />
+                <span asp-validation-for="Nombres"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
-                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            <!-- Apellidos -->
+            <div class="usuario-campo">
+                <label asp-for="Apellidos"></label>
+                <input asp-for="Apellidos" />
+                <span asp-validation-for="Apellidos"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
+            <!-- Correo -->
+            <div class="usuario-campo">
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" />
+                <span asp-validation-for="Correo"
+                      class="error-validacion"></span>
             </div>
 
-
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
+            <!-- Teléfono -->
+            <div class="usuario-campo">
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" />
+                <span asp-validation-for="Telefono"
+                      class="error-validacion"></span>
             </div>
 
             <!-- Foto de perfil -->
-            <div class="form-group mt-3">
-                <label class="control-label">Foto de perfil</label>
+            <div class="usuario-campo">
+
+                <label>Foto de perfil</label>
 
                 @if (!string.IsNullOrEmpty(Model.FotoPerfil))
                 {
-                    <div class="mb-2">
+                    <div class="foto-editar-container">
                         <img src="@Model.FotoPerfil"
-                             alt="Foto de perfil de @Model.Nombres"
-                             style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #ddd;" />
+                             alt="Foto de perfil"
+                             class="foto-editar" />
                     </div>
                 }
                 else
                 {
-                    <p>No tiene foto de perfil.</p>
+                    <p class="sin-foto">
+                        Este usuario no tiene foto de perfil.
+                    </p>
                 }
 
                 <input type="file"
                        name="fotoPerfil"
-                       class="form-control"
                        accept=".jpg,.jpeg,.png,.webp" />
 
-                <small class="text-muted">
-                    Formatos permitidos: JPG, JPEG, PNG y WEBP. Máximo 5 MB.
+                <small class="texto-ayuda">
+                    Selecciona una nueva foto para reemplazar la actual.
+                    JPG, JPEG, PNG o WEBP. Máximo 5 MB.
                 </small>
 
-                <span asp-validation-for="FotoPerfil" class="text-danger"></span>
+                <span asp-validation-for="FotoPerfil"
+                      class="error-validacion"></span>
+
             </div>
 
-            <!-- Contraseña -->
-            <div class="form-group mt-3">
-                <label class="control-label">Contraseña</label>
-                <div>
+            <!-- Cambiar contraseña -->
+            <div class="usuario-campo">
+
+                <label>Contraseña</label>
+
+                <div class="cambiar-contrasena">
+
+                    <p>
+                        La contraseña actual se conservará si no deseas cambiarla.
+                    </p>
+
                     <a asp-action="CambiarContrasena"
                        asp-route-id="@Model.Id"
-                       class="btn btn-outline-secondary">
+                       class="btn-cancelar">
                         Cambiar contraseña
                     </a>
+
                 </div>
+
             </div>
 
             <!-- Fecha de registro -->
-            <div class="form-group mt-3">
-                <label class="control-label">Fecha de registro</label>
+            <div class="usuario-campo">
+
+                <label>Fecha de registro</label>
+
                 <input value="@Model.FechaRegistro.ToShortDateString()"
-                       class="form-control"
+                       class="campo-solo-lectura"
                        readonly />
+
             </div>
 
             <!-- Estado -->
-            <div class="form-group mt-3">
-                <label class="control-label">Estado</label>
+            <div class="usuario-campo">
+
+                <label>Estado</label>
+
                 <input value="@(Model.Estado ? "Activo" : "Inactivo")"
-                       class="form-control"
+                       class="campo-solo-lectura"
                        readonly />
+
             </div>
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+            <!-- Acciones -->
+            <div class="usuario-form-acciones">
+
+                <button type="submit" class="btn-guardar">
+                    Guardar cambios
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
             </div>
+
         </form>
-    </div>
-</div>
 
-<div class="mt-2">
-    <a asp-action="Index">Volver a la lista</a>
+    </div>
+
 </div>
 
 @section Scripts {
