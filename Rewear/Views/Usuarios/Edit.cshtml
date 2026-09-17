@@ -5,7 +5,9 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/usuario-form.css" />
+    <link rel="stylesheet"
+          href="~/css/usuario-form.css"
+          asp-append-version="true" />
 }
 
 <div class="usuario-form-container">
@@ -17,9 +19,12 @@
 
     <div class="usuario-form-card">
 
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
 
-            <div asp-validation-summary="ModelOnly"
+            @* <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div> *@
+
+            <div asp-validation-summary="All"
                  class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
@@ -61,23 +66,34 @@
 
                 <label>Foto de perfil</label>
 
-                @if (!string.IsNullOrEmpty(Model.FotoPerfil))
-                {
-                    <div class="foto-editar-container">
-                        <img src="@Model.FotoPerfil"
+                <div class="foto-editar-container">
+
+                    @if (!string.IsNullOrEmpty(Model.FotoPerfil))
+                    {
+                        <img id="vistaPreviaFoto"
+                             src="@Model.FotoPerfil"
                              alt="Foto de perfil"
                              class="foto-editar" />
-                    </div>
-                }
-                else
-                {
-                    <p class="sin-foto">
-                        Este usuario no tiene foto de perfil.
-                    </p>
-                }
+                    }
+                    else
+                    {
+                        <img id="vistaPreviaFoto"
+                             src=""
+                             alt="Vista previa"
+                             class="foto-editar"
+                             style="display: none;" />
+
+                        <p id="sinFoto"
+                           class="sin-foto">
+                            Este usuario no tiene foto de perfil.
+                        </p>
+                    }
+
+                </div>
 
                 <input type="file"
                        name="fotoPerfil"
+                       id="fotoPerfil"
                        accept=".jpg,.jpeg,.png,.webp" />
 
                 <small class="texto-ayuda">
@@ -89,6 +105,26 @@
                       class="error-validacion"></span>
 
             </div>
+
+            <script>
+                document.getElementById("fotoPerfil").addEventListener("change", function (event) {
+
+                    const archivo = event.target.files[0];
+
+                    if (archivo) {
+
+                        const vistaPrevia = document.getElementById("vistaPreviaFoto");
+                        const sinFoto = document.getElementById("sinFoto");
+
+                        vistaPrevia.src = URL.createObjectURL(archivo);
+                        vistaPrevia.style.display = "block";
+
+                        if (sinFoto) {
+                            sinFoto.style.display = "none";
+                        }
+                    }
+                });
+            </script>
 
             <!-- Cambiar contraseña -->
             <div class="usuario-campo">

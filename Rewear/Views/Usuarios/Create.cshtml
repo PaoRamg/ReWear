@@ -4,66 +4,176 @@
     ViewData["Title"] = "Crear usuario";
 }
 
-<h1>Crear usuario</h1>
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/usuario-form.css"
+          asp-append-version="true" />
+}
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="usuario-form-container">
 
-            <div class="form-group">
-                <label asp-for="Nombres" class="control-label"></label>
-                <input asp-for="Nombres" class="form-control" />
-                <span asp-validation-for="Nombres" class="text-danger"></span>
+    <div class="usuario-form-header">
+        <h1>Crear usuario</h1>
+        <p>Registra un nuevo usuario en ReWear</p>
+    </div>
+
+    <div class="usuario-form-card">
+
+        <form asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div asp-validation-summary="All"
+                 class="text-danger"></div>
+
+            <!-- Nombres -->
+            <div class="usuario-campo">
+
+                <label asp-for="Nombres"></label>
+
+                <input asp-for="Nombres" />
+
+                <span asp-validation-for="Nombres"
+                      class="error-validacion">
+                </span>
+
             </div>
 
-            <div class="form-group">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
-                <span asp-validation-for="Apellidos" class="text-danger"></span>
+
+            <!-- Apellidos -->
+            <div class="usuario-campo">
+
+                <label asp-for="Apellidos"></label>
+
+                <input asp-for="Apellidos" />
+
+                <span asp-validation-for="Apellidos"
+                      class="error-validacion">
+                </span>
+
             </div>
 
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
+
+            <!-- Correo -->
+            <div class="usuario-campo">
+
+                <label asp-for="Correo"></label>
+
+                <input asp-for="Correo" />
+
+                <span asp-validation-for="Correo"
+                      class="error-validacion">
+                </span>
+
             </div>
 
-            <div class="form-group">
-                <label asp-for="Contrasena" class="control-label"></label>
-                <input asp-for="Contrasena" class="form-control" />
-                <span asp-validation-for="Contrasena" class="text-danger"></span>
+
+            <!-- Contraseña -->
+            <div class="usuario-campo">
+
+                <label asp-for="Contrasena"></label>
+
+                <input asp-for="Contrasena"
+                       type="password" />
+
+                <span asp-validation-for="Contrasena"
+                      class="error-validacion">
+                </span>
+
             </div>
 
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
+
+            <!-- Teléfono -->
+            <div class="usuario-campo">
+
+                <label asp-for="Telefono"></label>
+
+                <input asp-for="Telefono" />
+
+                <span asp-validation-for="Telefono"
+                      class="error-validacion">
+                </span>
+
             </div>
 
-            <div class="form-group">
-                <label class="control-label">Foto de perfil</label>
+
+            <!-- Foto de perfil -->
+            <div class="usuario-campo">
+
+                <label>Foto de perfil</label>
+
+                <div class="foto-editar-container">
+
+                    <img id="vistaPreviaFoto"
+                         src=""
+                         alt="Vista previa"
+                         class="foto-editar"
+                         style="display: none;" />
+
+                    <p id="sinFoto"
+                       class="sin-foto">
+                        Puedes agregar una foto de perfil.
+                    </p>
+
+                </div>
+
                 <input type="file"
                        name="fotoPerfil"
-                       class="form-control"
+                       id="fotoPerfil"
                        accept=".jpg,.jpeg,.png,.webp" />
-                <span asp-validation-for="FotoPerfil" class="text-danger"></span>
+
+                <small class="texto-ayuda">
+                    JPG, JPEG, PNG o WEBP. Máximo 5 MB.
+                </small>
+
             </div>
 
 
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
+            <!-- Acciones -->
+            <div class="usuario-form-acciones">
+
+                <button type="submit"
+                        class="btn-guardar">
+                    Crear usuario
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
             </div>
+
         </form>
+
     </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Volver a la lista</a>
-</div>
+
+<script>
+    document.getElementById("fotoPerfil").addEventListener("change", function (event) {
+
+        const archivo = event.target.files[0];
+
+        if (archivo) {
+
+            const vistaPrevia = document.getElementById("vistaPreviaFoto");
+            const sinFoto = document.getElementById("sinFoto");
+
+            vistaPrevia.src = URL.createObjectURL(archivo);
+            vistaPrevia.style.display = "block";
+
+            if (sinFoto) {
+                sinFoto.style.display = "none";
+            }
+        }
+    });
+</script>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -31,7 +31,7 @@ namespace Rewear.Controllers
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
             if (usuario == null)
             {
-                return NotFound();
+                return NotFound(); //this one to Business Layer
             }
 
             return View(usuario);
@@ -47,7 +47,7 @@ namespace Rewear.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,Nombres,Apellidos,Correo,Contrasena,Telefono,FotoPerfil")] Usuario usuario,
+            [Bind("Id,Nombres,Apellidos,Correo,Contrasena,Telefono")] Usuario usuario,
             IFormFile? fotoPerfil)
         {
             if (ModelState.IsValid)
@@ -126,6 +126,8 @@ namespace Rewear.Controllers
 
             return View(usuario);
         }
+
+
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -148,13 +150,17 @@ namespace Rewear.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             int id,
-            [Bind("Id,Nombres,Apellidos,Correo,Contrasena,Telefono")] Usuario usuario,
+            [Bind("Id,Nombres,Apellidos,Correo,Telefono")] Usuario usuario,
             IFormFile? fotoPerfil)
         {
             if (id != usuario.Id)
             {
                 return NotFound();
             }
+
+            // La contraseña se modifica en una pantalla separada.
+            // Por eso no debe validarse en este formulario.
+            ModelState.Remove(nameof(Usuario.Contrasena));
 
             if (ModelState.IsValid)
             {
@@ -166,17 +172,26 @@ namespace Rewear.Controllers
                     return NotFound();
                 }
 
-                // Actualizar solamente los datos que sí se pueden editar
+                // ==========================================
+                // ACTUALIZAR DATOS DEL USUARIO
+                // ==========================================
+
                 usuarioExistente.Nombres = usuario.Nombres;
                 usuarioExistente.Apellidos = usuario.Apellidos;
                 usuarioExistente.Correo = usuario.Correo;
-                usuarioExistente.Contrasena = usuario.Contrasena;
                 usuarioExistente.Telefono = usuario.Telefono;
 
-                // Si se seleccionó una nueva foto
+                // La contraseña NO se modifica aquí.
+                // Se conserva la que ya existe en la base de datos.
+
+
+                // ==========================================
+                // ACTUALIZAR FOTO DE PERFIL
+                // ==========================================
+
                 if (fotoPerfil != null && fotoPerfil.Length > 0)
                 {
-                    // Formatos permitidos
+                    // Extensiones permitidas
                     var extensionesPermitidas = new[]
                     {
                 ".jpg",
@@ -196,7 +211,7 @@ namespace Rewear.Controllers
                             "Solo se permiten imágenes JPG, JPEG, PNG o WEBP."
                         );
 
-                        return View(usuarioExistente);
+                        return View(usuario);
                     }
 
                     // Validar tamaño máximo: 5 MB
@@ -209,10 +224,13 @@ namespace Rewear.Controllers
                             "La imagen no puede superar los 5 MB."
                         );
 
-                        return View(usuarioExistente);
+                        return View(usuario);
                     }
 
-                    // Carpeta de destino
+                    // ==========================================
+                    // CREAR CARPETA
+                    // ==========================================
+
                     string carpeta = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot",
@@ -225,18 +243,31 @@ namespace Rewear.Controllers
                         Directory.CreateDirectory(carpeta);
                     }
 
-                    // Nombre único para la nueva imagen
-                    string nombreArchivo = Guid.NewGuid().ToString() + extension;
+                    // ==========================================
+                    // GENERAR NOMBRE ÚNICO
+                    // ==========================================
 
-                    string rutaArchivo = Path.Combine(carpeta, nombreArchivo);
+                    string nombreArchivo =
+                        Guid.NewGuid().ToString() + extension;
 
-                    // Guardar nueva imagen
-                    using (var stream = new FileStream(rutaArchivo, FileMode.Create))
+                    string rutaArchivo =
+                        Path.Combine(carpeta, nombreArchivo);
+
+                    // ==========================================
+                    // GUARDAR NUEVA FOTO
+                    // ==========================================
+
+                    using (var stream = new FileStream(
+                        rutaArchivo,
+                        FileMode.Create))
                     {
                         await fotoPerfil.CopyToAsync(stream);
                     }
 
-                    // Eliminar foto anterior
+                    // ==========================================
+                    // ELIMINAR FOTO ANTERIOR
+                    // ==========================================
+
                     if (!string.IsNullOrEmpty(usuarioExistente.FotoPerfil))
                     {
                         string rutaFotoAnterior = Path.Combine(
@@ -251,13 +282,17 @@ namespace Rewear.Controllers
                         }
                     }
 
-                    // Guardar la nueva ruta
+                    // ==========================================
+                    // GUARDAR RUTA DE LA NUEVA FOTO
+                    // ==========================================
+
                     usuarioExistente.FotoPerfil =
                         "/uploads/perfiles/" + nombreArchivo;
                 }
 
-                // FechaRegistro y Estado se conservan
-                // con los valores originales de la BD.
+                // ==========================================
+                // GUARDAR CAMBIOS
+                // ==========================================
 
                 try
                 {
@@ -278,6 +313,8 @@ namespace Rewear.Controllers
 
             return View(usuario);
         }
+
+
 
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
