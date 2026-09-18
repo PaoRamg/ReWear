@@ -1,4 +1,4 @@
-@model Rewear.Models.Usuario
+Ôªø@model Rewear.Models.Usuario
 
 @{
     ViewData["Title"] = "Detalle del usuario";
@@ -10,123 +10,99 @@
           asp-append-version="true" />
 }
 
-<div class="detalle-container">
+<div class="usuario-details-container">
 
-    <div class="detalle-header">
-        <h1>Detalle del usuario</h1>
-        <p>InformaciÛn del perfil</p>
-    </div>
+    <div class="usuario-details-card">
 
-    <div class="usuario-card">
-
-        <!-- Foto de perfil -->
-        <div class="foto-container">
+        <!-- FOTO Y NOMBRE -->
+        <div class="usuario-details-header">
 
             @if (!string.IsNullOrEmpty(Model.FotoPerfil))
             {
                 <img src="@Model.FotoPerfil"
-                     alt="Foto de perfil de @Model.Nombres"
-                     class="foto-perfil" />
+                     alt="Foto de perfil"
+                     class="usuario-details-foto" />
             }
             else
             {
-                <div class="foto-vacia">
-                    Sin foto
+                <div class="usuario-details-foto usuario-sin-foto">
+                    üë§
                 </div>
             }
 
+            <h1>
+                @Model.Nombres @Model.Apellidos
+            </h1>
+
+            <p>
+                @Model.Correo
+            </p>
+
         </div>
 
-        <!-- InformaciÛn del usuario -->
-        <div class="datos-usuario">
 
-            <div class="dato">
-                <div class="dato-label">
-                    Nombres
-                </div>
+        <!-- INFORMACI√ìN -->
+        <div class="usuario-details-info">
 
-                <div class="dato-valor">
-                    @Model.Nombres
-                </div>
+            <div class="usuario-details-dato">
+                <span>Nombres</span>
+                <strong>@Model.Nombres</strong>
             </div>
 
-            <div class="dato">
-                <div class="dato-label">
-                    Apellidos
-                </div>
-
-                <div class="dato-valor">
-                    @Model.Apellidos
-                </div>
+            <div class="usuario-details-dato">
+                <span>Apellidos</span>
+                <strong>@Model.Apellidos</strong>
             </div>
 
-            <div class="dato">
-                <div class="dato-label">
-                    Correo electrÛnico
-                </div>
-
-                <div class="dato-valor">
-                    @Model.Correo
-                </div>
+            <div class="usuario-details-dato">
+                <span>Correo electr√≥nico</span>
+                <strong>@Model.Correo</strong>
             </div>
 
-            <div class="dato">
-                <div class="dato-label">
-                    TelÈfono
-                </div>
-
-                <div class="dato-valor">
-                    @Model.Telefono
-                </div>
+            <div class="usuario-details-dato">
+                <span>Tel√©fono</span>
+                <strong>@Model.Telefono</strong>
             </div>
 
-            <div class="dato">
-                <div class="dato-label">
-                    Fecha de registro
-                </div>
-
-                <div class="dato-valor">
+            <div class="usuario-details-dato">
+                <span>Fecha de registro</span>
+                <strong>
                     @Model.FechaRegistro.ToShortDateString()
-                </div>
+                </strong>
             </div>
 
-            <div class="dato">
-                <div class="dato-label">
-                    Estado
-                </div>
+            <div class="usuario-details-dato">
+                <span>Estado</span>
 
-                <div class="dato-valor">
-
-                    @if (Model.Estado)
-                    {
-                        <span class="estado estado-activo">
-                            Activo
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="estado estado-inactivo">
-                            Inactivo
-                        </span>
-                    }
-
-                </div>
+                @if (Model.Estado)
+                {
+                    <strong class="estado-activo">
+                        ‚óè Activo
+                    </strong>
+                }
+                else
+                {
+                    <strong class="estado-inactivo">
+                        ‚óè Inactivo
+                    </strong>
+                }
             </div>
 
         </div>
 
-        <!-- Acciones -->
-        <div class="detalle-acciones">
+
+        <!-- ACCIONES -->
+        <div class="usuario-details-acciones">
 
             <a asp-action="Edit"
                asp-route-id="@Model.Id"
-               class="btn-detalle btn-editar-detalle">
+               class="btn-guardar">
                 Editar usuario
             </a>
 
             <a asp-action="Index"
-               class="btn-detalle btn-volver-detalle">
-                Volver a usuarios
+               class="btn-cancelar">
+                Volver a la lista
             </a>
 
         </div>

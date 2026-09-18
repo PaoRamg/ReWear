@@ -283,3 +283,162 @@
     .usuario-delete-acciones .btn-cancelar:hover {
         background-color: #e2e6e3;
     }
+
+/* =========================================
+   DETALLE DE USUARIO
+   ========================================= */
+
+.usuario-details-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 50px auto;
+}
+
+.usuario-details-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 35px 40px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e5e5;
+}
+
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.usuario-details-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.usuario-details-foto {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #1f513f;
+    margin-bottom: 15px;
+}
+
+.usuario-sin-foto {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f7f6;
+    color: #1f513f;
+    font-size: 45px;
+}
+
+.usuario-details-header h1 {
+    margin: 0 0 6px;
+    color: #1f513f;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.usuario-details-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   INFORMACIÓN
+   ========================================= */
+
+.usuario-details-info {
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 8px 0;
+    margin-bottom: 30px;
+}
+
+.usuario-details-dato {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    padding: 13px 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    .usuario-details-dato:last-child {
+        border-bottom: none;
+    }
+
+    .usuario-details-dato span {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .usuario-details-dato strong {
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+
+/* =========================================
+   ESTADO
+   ========================================= */
+
+.estado-activo {
+    color: #1f513f !important;
+}
+
+.estado-inactivo {
+    color: #b42318 !important;
+}
+
+
+/* =========================================
+   BOTONES
+   ========================================= */
+
+.usuario-details-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+    .usuario-details-acciones .btn-guardar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .usuario-details-acciones .btn-cancelar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .usuario-details-card {
+        padding: 25px 20px;
+    }
+
+    .usuario-details-dato {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .usuario-details-acciones {
+        flex-direction: column;
+    }
+}
