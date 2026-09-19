@@ -53,20 +53,20 @@ namespace Rewear.Controllers
             Usuario usuario,
             IFormFile? fotoPerfil)
         {
+            // Validación del modelo en el servidor
             if (!ModelState.IsValid)
             {
                 return View(usuario);
             }
 
+            // El Service se encarga de la lógica de negocio
+            // y del acceso a la base de datos.
             var resultado = await _usuarioService
                 .CrearAsync(usuario, fotoPerfil);
 
-            if (resultado == null)
+            if (!resultado.Exito)
             {
-                ModelState.AddModelError(
-                    "fotoPerfil",
-                    "La imagen no es válida. Solo se permiten JPG, JPEG, PNG o WEBP y un tamaño máximo de 5 MB.");
-
+                AgregarErrorService(resultado.Mensaje);
                 return View(usuario);
             }
 
@@ -101,13 +101,16 @@ namespace Rewear.Controllers
             Usuario usuario,
             IFormFile? fotoPerfil)
         {
+            // Verifica que el ID de la URL coincida con el ID recibido.
             if (id != usuario.Id)
             {
                 return NotFound();
             }
 
+            // La contraseña no se modifica desde este formulario.
             ModelState.Remove(nameof(Usuario.Contrasena));
 
+            // Validación del modelo en el servidor.
             if (!ModelState.IsValid)
             {
                 return View(usuario);
@@ -116,17 +119,14 @@ namespace Rewear.Controllers
             var resultado = await _usuarioService
                 .ActualizarAsync(id, usuario, fotoPerfil);
 
-            if (!resultado)
+            if (!resultado.Exito)
             {
-                if (!await _usuarioService.ExisteAsync(id))
+                if (resultado.Mensaje == "El usuario no existe.")
                 {
                     return NotFound();
                 }
 
-                ModelState.AddModelError(
-                    "fotoPerfil",
-                    "La imagen no es válida. Solo se permiten JPG, JPEG, PNG o WEBP y un tamaño máximo de 5 MB.");
-
+                AgregarErrorService(resultado.Mensaje);
                 return View(usuario);
             }
 
@@ -194,6 +194,7 @@ namespace Rewear.Controllers
             int id,
             string nuevaContrasena)
         {
+            // Validación de la contraseña
             if (string.IsNullOrWhiteSpace(nuevaContrasena))
             {
                 ModelState.AddModelError(
@@ -239,6 +240,38 @@ namespace Rewear.Controllers
             return RedirectToAction(
                 nameof(Edit),
                 new { id });
+        }
+
+        // Agrega al ModelState los errores devueltos por el Service.
+        private void AgregarErrorService(string? mensaje)
+        {
+            if (string.IsNullOrEmpty(mensaje))
+            {
+                return;
+            }
+
+            if (mensaje.Contains(
+                "correo",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                ModelState.AddModelError(
+                    nameof(Usuario.Correo),
+                    mensaje);
+            }
+            else if (mensaje.Contains(
+                "imagen",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                ModelState.AddModelError(
+                    "fotoPerfil",
+                    mensaje);
+            }
+            else
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    mensaje);
+            }
         }
     }
 }

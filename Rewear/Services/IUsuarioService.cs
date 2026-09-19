@@ -5,14 +5,16 @@ namespace Rewear.Services
     public interface IUsuarioService
     {
         Task<List<Usuario>> ObtenerTodosAsync();
+
         Task<Usuario?> ObtenerPorIdAsync(int id);
+
         Task<Usuario?> ObtenerParaEditarAsync(int id);
 
-        Task<Usuario?> CrearAsync(
+        Task<ResultadoOperacion> CrearAsync(
             Usuario usuario,
             IFormFile? fotoPerfil);
 
-        Task<bool> ActualizarAsync(
+        Task<ResultadoOperacion> ActualizarAsync(
             int id,
             Usuario usuario,
             IFormFile? fotoPerfil);
