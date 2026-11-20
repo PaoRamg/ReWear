@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Rewear.Data;
+using Rewear.Services;
 
 namespace Rewear
 {
@@ -16,7 +17,10 @@ namespace Rewear
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
             var app = builder.Build();
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

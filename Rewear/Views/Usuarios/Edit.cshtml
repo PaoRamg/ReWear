@@ -4,69 +4,193 @@
     ViewData["Title"] = "Editar usuario";
 }
 
-<h1>Editar usuario</h1>
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/usuario-form.css"
+          asp-append-version="true" />
+}
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="usuario-form-container">
+
+    <div class="usuario-form-header">
+        <h1>Editar usuario</h1>
+        <p>Actualiza la información del usuario</p>
+    </div>
+
+    <div class="usuario-form-card">
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+            @* <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div> *@
+
+            <div asp-validation-summary="All"
+                 class="text-danger"></div>
+
             <input type="hidden" asp-for="Id" />
 
-            <div class="form-group">
-                <label asp-for="Nombres" class="control-label"></label>
-                <input asp-for="Nombres" class="form-control" />
-                <span asp-validation-for="Nombres" class="text-danger"></span>
+            <!-- Nombres -->
+            <div class="usuario-campo">
+                <label asp-for="Nombres"></label>
+                <input asp-for="Nombres" />
+                <span asp-validation-for="Nombres"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
-                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            <!-- Apellidos -->
+            <div class="usuario-campo">
+                <label asp-for="Apellidos"></label>
+                <input asp-for="Apellidos" />
+                <span asp-validation-for="Apellidos"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
+            <!-- Correo -->
+            <div class="usuario-campo">
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" />
+                <span asp-validation-for="Correo"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Contrasena" class="control-label"></label>
-                <input asp-for="Contrasena" class="form-control" />
-                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            <!-- Teléfono -->
+            <div class="usuario-campo">
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" />
+                <span asp-validation-for="Telefono"
+                      class="error-validacion"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
+            <!-- Foto de perfil -->
+            <div class="usuario-campo">
+
+                <label>Foto de perfil</label>
+
+                <div class="foto-editar-container">
+
+                    @if (!string.IsNullOrEmpty(Model.FotoPerfil))
+                    {
+                        <img id="vistaPreviaFoto"
+                             src="@Model.FotoPerfil"
+                             alt="Foto de perfil"
+                             class="foto-editar" />
+                    }
+                    else
+                    {
+                        <img id="vistaPreviaFoto"
+                             src=""
+                             alt="Vista previa"
+                             class="foto-editar"
+                             style="display: none;" />
+
+                        <p id="sinFoto"
+                           class="sin-foto">
+                            Este usuario no tiene foto de perfil.
+                        </p>
+                    }
+
+                </div>
+
+                <input type="file"
+                       name="fotoPerfil"
+                       id="fotoPerfil"
+                       accept=".jpg,.jpeg,.png,.webp" />
+
+                <small class="texto-ayuda">
+                    Selecciona una nueva foto para reemplazar la actual.
+                    JPG, JPEG, PNG o WEBP. Máximo 5 MB.
+                </small>
+
+                <span asp-validation-for="FotoPerfil"
+                      class="error-validacion"></span>
+
             </div>
 
-            <div class="form-group">
-                <label asp-for="FechaRegistro" class="control-label"></label>
-                <input asp-for="FechaRegistro" class="form-control" />
-                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+            <script>
+                document.getElementById("fotoPerfil").addEventListener("change", function (event) {
+
+                    const archivo = event.target.files[0];
+
+                    if (archivo) {
+
+                        const vistaPrevia = document.getElementById("vistaPreviaFoto");
+                        const sinFoto = document.getElementById("sinFoto");
+
+                        vistaPrevia.src = URL.createObjectURL(archivo);
+                        vistaPrevia.style.display = "block";
+
+                        if (sinFoto) {
+                            sinFoto.style.display = "none";
+                        }
+                    }
+                });
+            </script>
+
+            <!-- Cambiar contraseña -->
+            <div class="usuario-campo">
+
+                <label>Contraseña</label>
+
+                <div class="cambiar-contrasena">
+
+                    <p>
+                        La contraseña actual se conservará si no deseas cambiarla.
+                    </p>
+
+                    <a asp-action="CambiarContrasena"
+                       asp-route-id="@Model.Id"
+                       class="btn-cancelar">
+                        Cambiar contraseña
+                    </a>
+
+                </div>
+
             </div>
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
+            <!-- Fecha de registro -->
+            <div class="usuario-campo">
+
+                <label>Fecha de registro</label>
+
+                <input value="@Model.FechaRegistro.ToShortDateString()"
+                       class="campo-solo-lectura"
+                       readonly />
+
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+            <!-- Estado -->
+            <div class="usuario-campo">
+
+                <label>Estado</label>
+
+                <input value="@(Model.Estado ? "Activo" : "Inactivo")"
+                       class="campo-solo-lectura"
+                       readonly />
+
             </div>
+
+            <!-- Acciones -->
+            <div class="usuario-form-acciones">
+
+                <button type="submit" class="btn-guardar">
+                    Guardar cambios
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Volver a la lista</a>
+    </div>
+
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -24,5 +24,11 @@ namespace Rewear.Controllers
 
             return View(publicaciones);
         }
+
+        // GET: Publicacions/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

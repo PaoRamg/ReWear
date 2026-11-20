@@ -4,64 +4,88 @@
     ViewData["Title"] = "Eliminar usuario";
 }
 
-<h1>Eliminar usuario</h1>
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/usuario-form.css"
+          asp-append-version="true" />
+}
 
-<h3 class="text-danger">¿Está seguro de que desea eliminar este usuario?</h3>
-<div>
-    <h4>Usuario</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombres)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombres)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellidos)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Apellidos)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Correo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Correo)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefono)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaRegistro)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.FechaRegistro.ToShortDateString()
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class="col-sm-10">
-            @(Model.Estado ? "Activo" : "Inactivo")
-        </dd>
-    </dl>
+<div class="usuario-delete-container">
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver a la lista</a>
-    </form>
+    <div class="usuario-delete-card">
+
+        <div class="usuario-delete-header">
+
+            <div class="usuario-delete-icon">
+                ⚠
+            </div>
+
+            <h1>Eliminar usuario</h1>
+
+            <p>
+                ¿Está seguro de que desea eliminar este usuario?
+            </p>
+
+        </div>
+
+
+        <div class="usuario-delete-info">
+
+            <div class="dato-usuario">
+                <span>Nombres</span>
+                <strong>@Model.Nombres</strong>
+            </div>
+
+            <div class="dato-usuario">
+                <span>Apellidos</span>
+                <strong>@Model.Apellidos</strong>
+            </div>
+
+            <div class="dato-usuario">
+                <span>Correo electrónico</span>
+                <strong>@Model.Correo</strong>
+            </div>
+
+            <div class="dato-usuario">
+                <span>Teléfono</span>
+                <strong>@Model.Telefono</strong>
+            </div>
+
+            <div class="dato-usuario">
+                <span>Fecha de registro</span>
+                <strong>@Model.FechaRegistro.ToShortDateString()</strong>
+            </div>
+
+            <div class="dato-usuario">
+                <span>Estado</span>
+                <strong>
+                    @(Model.Estado ? "Activo" : "Inactivo")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <form asp-action="Delete" method="post">
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="usuario-delete-acciones">
+
+                <button type="submit"
+                        class="btn-eliminar-usuario">
+                    Eliminar usuario
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
